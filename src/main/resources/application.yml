@@ -1,0 +1,53 @@
+
+spring:
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/passwordkeeper}
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        order_by.default_null_ordering: last
+        format_sql: true
+        default_schema: public
+    open-in-view: false
+    show-sql: false
+    generate-ddl: true
+  jackson:
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: false
+  session:
+    jdbc:
+      initialize-schema: always
+  task:
+    scheduling:
+      pool:
+        size: 1
+
+
+token:
+  expiration:
+    time: 6000000
+  signing:
+    key: ${JWT_SECRET}
+
+scheduler:
+  cron: "0 3 * * * *"
+  batch_size: 5
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: 'prometheus'
+server:
+  servlet:
+    context-path: /api
